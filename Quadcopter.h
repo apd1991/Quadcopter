@@ -3,39 +3,23 @@
 
 #include <eigen3/Eigen/Dense>
 
-// Quadcopter class
 class Quadcopter {
 public:
-    // Constructor
     Quadcopter();
-
-    // Destructor
-    ~Quadcopter();
-
-    // Set control inputs
-    void setControlInputs(double u1, double u2, double u3, double u4);
-
-    // Update quadcopter state
+    void setInitialState(const Eigen::VectorXd& state);
+    void setControlInputs(const Eigen::VectorXd& controls);
     void updateState(double dt);
-
-    // Get current quadcopter state
-    Eigen::VectorXd getState();
+    const Eigen::VectorXd& getState() const;
 
 private:
+    Eigen::VectorXd state_;     // 12 states [x, y, z, vx, vy, vz, phi, theta, psi, wx, wy, wz]
+    Eigen::VectorXd controls_;  // 4 control inputs [thrust, roll, pitch, yaw]
+
     // Quadcopter parameters
-    const double g;  // acceleration due to gravity (m/s^2)
-    const double m;  // mass of the quadcopter (kg)
-    const double l;  // length of each arm (m)
-    const double k;  // motor constant
-    const double b;  // drag constant
-
-    // Quadcopter state
-    Eigen::VectorXd state;
-
-    // Helper functions
-    Eigen::MatrixXd getRotationMatrix();
-    Eigen::VectorXd calculateForces();
-    Eigen::VectorXd calculateMoments();
+    double mass_;
+    double g_;
+    double L_;
+    // ...
 };
 
-#endif
+#endif // QUADCOPTER_H
